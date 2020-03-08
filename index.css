@@ -20,7 +20,6 @@
     background: #ccc;
     cursor: pointer;
     border-radius: .3125rem;
-    border: 1px solid #ccc;
 }
 .button:hover {
     background: #ddd;
@@ -36,6 +35,7 @@
     display: flex;
     flex-direction: column;
     margin: .5rem .5rem 0 0;
+    padding-top: .25rem;
 }
 .file-icon {
     height: 3rem;
@@ -43,10 +43,11 @@
 .file-label {
     font-size: small;
     padding: .125rem;
-    background-color: aquamarine;
+    background-color: #ddd;
     margin-top: .25rem;
 }
-.selected {
+.selected,
+.selected .file-label {
     background: aquamarine;
 }
 .attribution {
