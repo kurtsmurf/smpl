@@ -46,17 +46,34 @@ const comp = audioContext.createDynamicsCompressor()
 const analyser = audioContext.createAnalyser()
 out.connect(comp).connect(analyser).connect(audioContext.destination)
 
-const fileRepresentation = (fileName) => {
+let selectedFile;
+
+const fileRepresentation = (fileName, index) => {
   const root = document.createElement('div')
   root.classList.add('file')
+  root.id = index
+  root.addEventListener('click', (e) => {
+    if (selectedFile !== undefined) {
+      const prevSelected = document.getElementById(selectedFile)
+      prevSelected.classList.remove('selected')
+    }
+
+    selectedFile = index
+
+    const nextSelected = document.getElementById(selectedFile)
+    nextSelected.classList.add('selected')
+  })
 
   const icon = document.createElement('img')
   icon.classList.add('file-icon')
-  icon.src = 'images/audio-file.svg'
+  icon.src = 'images/sound-file.svg'
 
   const label = document.createElement('span')
   label.classList.add('file-label')
   label.innerText = fileName
+
+  icon.addEventListener('click', (e) => e.preventDefault())
+  label.addEventListener('click', (e) => e.preventDefault())
 
   root.appendChild(icon)
   root.appendChild(label)
@@ -71,7 +88,8 @@ function handleFile(file) {
     audioContext.decodeAudioData(arrayBuffer)
       .then(audioBuffer => {
         audioBuffers.push(audioBuffer)
-        const visualFile = fileRepresentation(file.name)
+        const index = audioBuffers.length - 1
+        const visualFile = fileRepresentation(file.name, index)
         document.querySelector('.desktop').appendChild(visualFile)
       })
   }
@@ -137,12 +155,6 @@ const getBufSrc = (audioBuffer) => {
   return sourceNode
 }
 
-const play = (playbackRate = 1) => {
-  const tone = getBufSrc(audioBuffers[0])
-  tone.playbackRate.value = playbackRate
-  tone.start()
-}
-
 const noteIndex = (char, rowOffset = 3) => {
   playableKey = playableKeys[char]
   if (!playableKey) return
@@ -155,7 +167,7 @@ const handleKeyDown = (e) => {
   if (!playableKeys[e.key]) return
 
   const playbackRate = Math.pow(2, noteIndex(e.key) / 12)
-  const tone = getBufSrc(audioBuffers[0])
+  const tone = getBufSrc(audioBuffers[selectedFile])
   tone.playbackRate.value = playbackRate
   tone.loop = true
   tone.start()

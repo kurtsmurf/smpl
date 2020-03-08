@@ -46,6 +46,9 @@
     background-color: aquamarine;
     margin-top: .25rem;
 }
+.selected {
+    background: aquamarine;
+}
 .attribution {
     margin-top: auto;
     text-align: right;
