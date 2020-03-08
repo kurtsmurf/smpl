@@ -179,8 +179,13 @@ const handleKeyDown = (e) => {
 const handleKeyUp = (e) => {
   if (!playableKeys[e.key]) return
 
-  tones[e.key].forEach(tone => tone.stop())
+  tones[e.key].forEach(tone => {
+    tone.stop()
+  })
 }
 
 document.addEventListener('keydown', handleKeyDown)
 document.addEventListener('keyup', handleKeyUp)
+
+// todo: toggle allow re-trigger
+// todo: toggle randomize panning
