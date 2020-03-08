@@ -78,27 +78,6 @@ function handleFile(file) {
   reader.readAsArrayBuffer(file)
 }
 
-function stereoSweep(audioBuffer, numPlays = 8, wait = 200) {
-  function play(pan, playbackRate) {
-      const panner = audioContext.createStereoPanner()
-      panner.pan.value = pan
-
-      const bufferSrc = audioContext.createBufferSource()
-      bufferSrc.buffer = audioBuffer
-      bufferSrc.playbackRate.value = playbackRate
-
-      bufferSrc.connect(panner).connect(out)
-      bufferSrc.start()
-  }
-
-  for (i=0;i<numPlays;i++) {
-      const pan = i * (2/(numPlays - 1)) - 1
-      const playbackRate = Math.pow(2, i/2000)
-      console.log(pan, playbackRate)
-      setTimeout(() => play(pan, playbackRate), i * wait)
-  }
-}
-
 const playableKeys = {
   "0": { "index": 9, "row": 3 },
   "1": { "index": 0, "row": 3 },
