@@ -46,6 +46,24 @@ const comp = audioContext.createDynamicsCompressor()
 const analyser = audioContext.createAnalyser()
 out.connect(comp).connect(analyser).connect(audioContext.destination)
 
+const fileRepresentation = (fileName) => {
+  const root = document.createElement('div')
+  root.classList.add('file')
+
+  const icon = document.createElement('img')
+  icon.classList.add('file-icon')
+  icon.src = 'images/audio-file.svg'
+
+  const label = document.createElement('span')
+  label.classList.add('file-label')
+  label.innerText = fileName
+
+  root.appendChild(icon)
+  root.appendChild(label)
+
+  return root
+}
+
 function handleFile(file) {
   let reader = new FileReader()
   reader.onloadend = (e) => {
@@ -53,9 +71,8 @@ function handleFile(file) {
     audioContext.decodeAudioData(arrayBuffer)
       .then(audioBuffer => {
         audioBuffers.push(audioBuffer)
-        const fileName = document.createElement('div')
-        fileName.innerText = file.name
-        dropArea.appendChild(fileName)
+        const visualFile = fileRepresentation(file.name)
+        document.querySelector('.desktop').appendChild(visualFile)
       })
   }
   reader.readAsArrayBuffer(file)

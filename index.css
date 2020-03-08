@@ -8,9 +8,11 @@
     width: 100%;
     height: 100%;
     font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 #drop-area.highlight {
-    border-color: purple;
+    border-color: aquamarine;
 }
 .button {
     display: inline-block;
@@ -25,4 +27,28 @@
 }
 #fileElem {
     display: none;
+}
+.desktop {
+    display: flex;
+    flex-wrap: wrap;
+}
+.file {
+    display: flex;
+    flex-direction: column;
+    margin: .5rem .5rem 0 0;
+}
+.file-icon {
+    height: 3rem;
+}
+.file-label {
+    font-size: small;
+    padding: .125rem;
+    background-color: aquamarine;
+    margin-top: .25rem;
+}
+.attribution {
+    margin-top: auto;
+    text-align: right;
+    font-weight: lighter;
+    font-size: small;
 }
