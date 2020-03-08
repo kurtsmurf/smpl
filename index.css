@@ -1,35 +1,29 @@
+html,
+body,
 #drop-area {
-    border: 2px dashed #ccc;
-    border-radius: 20px;
-    width: 480px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
     font-family: sans-serif;
-    margin: 100px auto;
-    padding: 20px;
+}
+#drop-area {
+    border: 1rem solid #ccc;
+    padding: 1rem;
+    width: calc(100% - 4rem);
+    height: calc(100% - 4rem);
 }
 #drop-area.highlight {
     border-color: purple;
 }
-p {
-    margin-top: 0;
-}
-.my-form {
-    margin-bottom: 10px;
-}
-#gallery {
-    margin-top: 10px;
-}
-#gallery img {
-    width: 150px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    vertical-align: middle;
-}
+
 .button {
     display: inline-block;
-    padding: 10px;
+    padding: .625rem;
     background: #ccc;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: .3125rem;
     border: 1px solid #ccc;
 }
 .button:hover {
