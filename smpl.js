@@ -1,8 +1,8 @@
 const dropArea = document.getElementById('drop-area')
 
-  ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false)
-  })
+;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, preventDefaults, false)
+})
 
 function preventDefaults(e) {
   e.preventDefault()
@@ -161,10 +161,12 @@ const noteIndex = (char, rowOffset = 3) => {
   return playableKey.index + playableKey.row * rowOffset
 }
 
-tones = {}
+let tones = {}
+let retriggerIsAllowed = false
 
 const handleKeyDown = (e) => {
   if (!playableKeys[e.key]) return
+  if (tones[e.key] && !retriggerIsAllowed) return
 
   const playbackRate = Math.pow(2, noteIndex(e.key) / 12)
   const tone = getBufSrc(audioBuffers[selectedFile])
@@ -182,6 +184,8 @@ const handleKeyUp = (e) => {
   tones[e.key].forEach(tone => {
     tone.stop()
   })
+
+  tones[e.key] = null
 }
 
 document.addEventListener('keydown', handleKeyDown)
