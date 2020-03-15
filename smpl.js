@@ -26,6 +26,7 @@ function unhighlight(e) {
 }
 
 dropArea.addEventListener('drop', handleDrop, false)
+dropArea.addEventListener('change', (e) => handleFiles(e.target.files))
 
 function handleDrop(e) {
   let dt = e.dataTransfer
@@ -48,20 +49,26 @@ out.connect(comp).connect(analyser).connect(audioContext.destination)
 
 let selectedFile;
 
+const selectFile = (index) => {
+  if (selectedFile !== undefined) {
+    const prevSelected = document.getElementById(selectedFile)
+    prevSelected.classList.remove('selected')
+  }
+
+  selectedFile = index
+
+  const nextSelected = document.getElementById(selectedFile)
+  nextSelected.classList.add('selected')
+}
+
 const fileRepresentation = (fileName, index) => {
   const root = document.createElement('div')
   root.classList.add('file')
   root.id = index
-  root.addEventListener('click', (e) => {
-    if (selectedFile !== undefined) {
-      const prevSelected = document.getElementById(selectedFile)
-      prevSelected.classList.remove('selected')
-    }
-
-    selectedFile = index
-
-    const nextSelected = document.getElementById(selectedFile)
-    nextSelected.classList.add('selected')
+  root.tabIndex = 0;
+  root.addEventListener('click', () => selectFile(index))
+  root.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') { selectFile(index) }
   })
 
   const icon = document.createElement('img')
