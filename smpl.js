@@ -36,7 +36,7 @@ function handleDrop(e) {
 }
 
 function handleFiles(files) {
-  arr = [...files]
+  const arr = [...files]
   arr.forEach(handleFile)
 }
 
