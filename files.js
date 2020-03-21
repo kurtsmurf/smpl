@@ -37,6 +37,7 @@ export const initFiles = (handleFile) => {
   }
 
   function handleFiles(files) {
+    if (!files) return
     const arr = [...files]
     arr.forEach(handleFile)
   }

@@ -7,6 +7,7 @@ const audioBuffers = []
 const out = audioContext.createGain()
 const comp = audioContext.createDynamicsCompressor()
 const analyser = audioContext.createAnalyser()
+
 out.connect(comp).connect(analyser).connect(audioContext.destination)
 
 let selectedFile;
@@ -87,11 +88,28 @@ const noteIndex = (char, rowOffset = 3) => {
 let tones = {}
 let retriggerIsAllowed = false
 
+let detuneCoarse = 0;
+
+const detuneCoarseCtrl = document.createElement('input')
+detuneCoarseCtrl.type = 'number'
+detuneCoarseCtrl.value = detuneCoarse
+
+detuneCoarseCtrl.addEventListener('change', (e) => {
+  detuneCoarse = parseInt(e.target.value);
+  console.log(detuneCoarse)
+})
+
+document.querySelector('form').appendChild(detuneCoarseCtrl)
+
 const handleKeyDown = (e) => {
   if (!playableKeys[e.key]) return
   if (tones[e.key] && !retriggerIsAllowed) return
 
-  const playbackRate = Math.pow(2, noteIndex(e.key) / 12)
+  const offsetSemitones = noteIndex(e.key) + detuneCoarse
+
+  console.log(offsetSemitones)
+
+  const playbackRate = Math.pow(2, offsetSemitones / 12)
   const tone = getBufSrc(audioBuffers[selectedFile])
   tone.playbackRate.value = playbackRate
   tone.loop = true
