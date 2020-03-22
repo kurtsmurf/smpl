@@ -66,7 +66,7 @@ function handleFile(file) {
   reader.readAsArrayBuffer(file)
 }
 
-import { playableKeys } from './playableKeys.js'
+import { playableKeys, noteIndex } from './playableKeys.js'
 
 const getBufSrc = (audioBuffer) => {
   const sourceNode = audioContext.createBufferSource()
@@ -77,12 +77,6 @@ const getBufSrc = (audioBuffer) => {
 
   sourceNode.connect(stereoPanner).connect(out)
   return sourceNode
-}
-
-const noteIndex = (char, rowOffset = 3) => {
-  const playableKey = playableKeys[char]
-  if (!playableKey) return
-  return playableKey.index + playableKey.row * rowOffset
 }
 
 let tones = {}

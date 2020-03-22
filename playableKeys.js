@@ -45,3 +45,9 @@ export const playableKeys = {
   "-": { "index": 10, "row": 3 },
   "=": { "index": 11, "row": 3 }
 }
+
+export const noteIndex = (char, rowOffset = 3) => {
+  const playableKey = playableKeys[char]
+  if (!playableKey) return
+  return playableKey.index + playableKey.row * rowOffset
+}
