@@ -1,44 +1,15 @@
-const dropArea = document.getElementById('drop-area')
+const fileElem = document.getElementById('fileElem')
+fileElem.addEventListener('change', (e) => handleFiles(e.target.files))
 
-;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, preventDefaults, false)
-})
-
-function preventDefaults(e) {
-  e.preventDefault()
-  e.stopPropagation()
-}
-
-;['dragenter', 'dragover'].forEach(eventName => {
-  dropArea.addEventListener(eventName, highlight, false)
-})
-
-;['dragleave', 'drop'].forEach(eventName => {
-  dropArea.addEventListener(eventName, unhighlight, false)
-})
-
-function highlight(e) {
-  dropArea.classList.add('highlight')
-}
-
-function unhighlight(e) {
-  dropArea.classList.remove('highlight')
-}
-
-dropArea.addEventListener('drop', handleDrop, false)
-dropArea.addEventListener('change', (e) => handleFiles(e.target.files))
-
-function handleDrop(e) {
-  let dt = e.dataTransfer
-  let files = dt.files
-
-  handleFiles(files)
-}
 
 function handleFiles(files) {
   arr = [...files]
   arr.forEach(handleFile)
 }
+
+let globalOffset = 0
+globalOffsetInput = document.getElementById('global-offset')
+globalOffsetInput.addEventListener('change', e => globalOffset = parseInt(e.target.value))
 
 const audioContext = new AudioContext()
 const audioBuffers = []
@@ -162,10 +133,11 @@ const getBufSrc = (audioBuffer) => {
   return sourceNode
 }
 
-const noteIndex = (char, rowOffset = 3) => {
-  playableKey = playableKeys[char]
+const noteIndex = (char) => {
+  const rowOffset = 3
+  const playableKey = playableKeys[char]
   if (!playableKey) return
-  return playableKey.index + playableKey.row * rowOffset
+  return playableKey.index + playableKey.row * rowOffset + globalOffset
 }
 
 let tones = {}
