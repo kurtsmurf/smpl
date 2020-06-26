@@ -7,9 +7,14 @@ function handleFiles(files) {
   arr.forEach(handleFile)
 }
 
-let globalOffset = 0
-globalOffsetInput = document.getElementById('global-offset')
-globalOffsetInput.addEventListener('change', e => globalOffset = parseInt(e.target.value))
+let offsetSemitones = 0
+const offsetSemisInput = document.getElementById('offset-semitones')
+offsetSemisInput.addEventListener('change', e => offsetSemitones = parseInt(e.target.value))
+
+let offsetCents = 0
+const offsetCentsInput = document.getElementById('offset-cents')
+offsetCentsInput.addEventListener('change', e => offsetCents = parseInt(e.target.value))
+
 
 const audioContext = new AudioContext()
 const audioBuffers = []
@@ -137,7 +142,7 @@ const noteIndex = (char) => {
   const rowOffset = 3
   const playableKey = playableKeys[char]
   if (!playableKey) return
-  return playableKey.index + playableKey.row * rowOffset + globalOffset
+  return playableKey.index + playableKey.row * rowOffset + offsetSemitones + offsetCents / 100
 }
 
 let tones = {}
