@@ -44,7 +44,7 @@ const fileRepresentation = (fileName, index) => {
   root.tabIndex = 0;
   root.addEventListener('click', () => selectFile(index))
   root.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') { selectFile(index) }
+    if (e.key === 'Enter' || e.key === ' ') { selectFile(index) }
   })
 
   const icon = document.createElement('img')
@@ -134,8 +134,19 @@ const getBufSrc = (audioBuffer) => {
   const stereoPanner = audioContext.createStereoPanner()
   stereoPanner.pan.value = Math.random() * 2 - 1
 
-  sourceNode.connect(stereoPanner).connect(out)
-  return sourceNode
+  const gain = audioContext.createGain()
+
+  sourceNode.connect(stereoPanner).connect(gain).connect(out)
+
+  const tone = {
+    source: sourceNode,
+    stop: () => {
+      const release = .2
+      gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + release)
+      setTimeout(() => sourceNode.stop(), release * 1000 + 100)
+    }    
+  }
+  return tone
 }
 
 const noteIndex = (char) => {
@@ -154,9 +165,9 @@ const handleKeyDown = (e) => {
 
   const playbackRate = Math.pow(2, noteIndex(e.key) / 12)
   const tone = getBufSrc(audioBuffers[selectedFile])
-  tone.playbackRate.value = playbackRate
-  tone.loop = true
-  tone.start()
+  tone.source.playbackRate.value = playbackRate
+  tone.source.loop = true
+  tone.source.start()
 
   tones[e.key] = tones[e.key] || []
   tones[e.key].push(tone)
