@@ -1,6 +1,6 @@
 const fileElem = document.getElementById('fileElem')
 fileElem.addEventListener('change', (e) => handleFiles(e.target.files))
-
+document.querySelector('label[for="fileElem"]').addEventListener('keypress', e => ['Space', 'Enter'].includes(e.code) && fileElem.click());
 
 function handleFiles(files) {
   arr = [...files]
